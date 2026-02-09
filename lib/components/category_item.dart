@@ -15,10 +15,14 @@ class CategoryItem extends StatelessWidget {
     //   ),
     // );
 
-    Navigator.of(context).pushNamed(AppRouters.CATEGORIES_MEALS, arguments: category);
+    //Navegando para a tela onde mostra as refeições dessa categoria, passando a categoria como argumento
+    Navigator.of(
+      context,
+    ).pushNamed(AppRouters.CATEGORIES_MEALS, arguments: category);
   }
 
   Widget build(BuildContext context) {
+    //InkWell: Widget clicável
     return InkWell(
       onTap: () {
         _selectedCategory(context);
