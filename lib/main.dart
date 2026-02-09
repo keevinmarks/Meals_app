@@ -20,21 +20,24 @@ class _MyAppState extends State<MyApp> {
   List<Meal> _availabMeals = DUMMY_MEALS;
   Settings settings = Settings();
   List<Meal> _favoritesMeals = [];
+
+  //Função que faz a filtragem com base nos filtros
   void _filterMeals(Settings settings) {
     setState(() {
       this.settings = settings;
-
       _availabMeals = DUMMY_MEALS.where((meal) {
         bool gluten = !meal.isGlutenFree && settings.isGlutenFree;
         bool lactose = !meal.isLactoseFree && settings.isLactoseFree;
         bool vegan = !meal.isVegan && settings.isVegan;
         bool vegetarian = !meal.isVegetarian && settings.isVegantarian;
 
+        //Se a refeição passou em todos em filtros então retorna true
         return !gluten && !lactose && !vegan && !vegetarian;
       }).toList();
     });
   }
 
+  //Função para adicionar ou remover uma refeição da lista de favoritos 
   void _toggleFavoriteMeal(Meal meal) {
     //print(meal.title);
     setState(() {
@@ -44,6 +47,7 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
+  //Verificando se uma refeição está contida na lista de refeições favoritas
   bool _isFavorite(Meal meal) {
     return _favoritesMeals.contains(meal);
   }
@@ -51,7 +55,10 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      //Titulo do aplicativo:
       title: 'DeliMeals',
+
+      //Definindo temas para serem usados no aplicativo:
       theme: ThemeData(
         scaffoldBackgroundColor: Colors.amber.shade50,
         colorScheme: ColorScheme.fromSwatch(
@@ -69,12 +76,18 @@ class _MyAppState extends State<MyApp> {
           ),
         ),
       ),
-      //Primeira a tentativa vai ser pelo routers
+      //Mostrando as telas por meio de rotas e não mais pelo home
+      //Primeira a tentativa vai ser pelo routers, onde vai entrar primeiro em HOME, que está como /
       routes: {
         AppRouters.CATEGORIES_MEALS: (ctx) =>
             CategoriesMealsScreen(_availabMeals),
+        
+        //Passando as refeições favoritas para a tela de TabScreen, para pode ela passar para a tela de refeições favoritas
         AppRouters.HOME: (ctx) => TabsScreen(_favoritesMeals),
-        AppRouters.MEAL_DETAIL: (ctx) => MealDetailScreen(_toggleFavoriteMeal, _isFavorite),
+
+        //Rota de detalhe da refeição: passando a função de adicionar ou remover refeição da lista de favoritos e a função de verificar se uma refeição está contida na lista de favoritos
+        AppRouters.MEAL_DETAIL: (ctx) =>
+            MealDetailScreen(_toggleFavoriteMeal, _isFavorite),
         AppRouters.SETTINGS: (ctx) => SettingsScreen(settings, _filterMeals),
       },
       //Se não for encontrado a rota no routers, ele vai entrar no onGenerateRoute, que gera a rota de forma dinãmica

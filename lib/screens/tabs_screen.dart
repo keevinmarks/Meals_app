@@ -13,7 +13,10 @@ class TabsScreen extends StatefulWidget {
 
 class _TabsScreenState extends State<TabsScreen> {
   int _selectedScreenIndex = 0;
+  //Definindo um Map com String e object para melhor utilização das informações:
   List<Map<String, Object>> _screen = [];
+
+  //Altera o valor de _selectedScreenIndex, passando o novo index com base no botão clicado
   void _selectedSreen(int index) {
     setState(() {
       _selectedScreenIndex = index;
@@ -23,12 +26,13 @@ class _TabsScreenState extends State<TabsScreen> {
   @override
   void initState() {
     super.initState();
-
+    //Setando os valores inicias com o initState
     setState(() {
       _screen = [
         {"title": "Lista de categorias", "screen": CategoriesScreen()},
         {
           "title": "Lista de favoritos",
+          //Passando as refeições favoritas para a tela FavoriteScreen
           "screen": FavoriteScreen(widget.favoriteMeals),
         },
       ];
@@ -66,6 +70,8 @@ class _TabsScreenState extends State<TabsScreen> {
         backgroundColor: Theme.of(context).colorScheme.primary,
         unselectedItemColor: Colors.white,
         selectedItemColor: Colors.amber,
+
+        //Define em qual tab está atualmente, no caso, no mesmo index da página
         currentIndex: _selectedScreenIndex,
         //type: BottomNavigationBarType.shifting,
         items: [
@@ -79,6 +85,7 @@ class _TabsScreenState extends State<TabsScreen> {
           ),
         ],
       ),
+      //Definindo qual página deverar mostrar agora com base no _selectedScreenIndex, o cast deve ser feito porque no Map o Widget está como Object
       body: _screen[_selectedScreenIndex]["screen"] as Widget,
     );
   }

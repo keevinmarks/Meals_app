@@ -7,6 +7,7 @@ class MealDetailScreen extends StatelessWidget {
 
   MealDetailScreen(this.selectedFavorite, this.isFavoriteMeal);
 
+  //Função para criar um widget de título personalizado
   Widget _createSectionTitle(BuildContext context, String title) {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 10),
@@ -14,6 +15,7 @@ class MealDetailScreen extends StatelessWidget {
     );
   }
 
+  //Função para criar um Widget Container personalizado, onde vai conter um ListView
   Widget _createSectionContainer(BuildContext context, ListView child) {
     return Container(
       height: 300,
@@ -37,12 +39,16 @@ class MealDetailScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
+            //Container da imagem da refeição
             Container(
               height: 300,
               width: double.infinity,
               child: Image.network(meal.imageUrl, fit: BoxFit.cover),
             ),
+            //Utilizando o container criado anteriomente para exibir o título dessa parte:
             _createSectionTitle(context, "Ingredientes"),
+
+            //Utilizando o container criado anteriomente para exibir o ListView dos ingredientes
             _createSectionContainer(
               context,
               ListView.builder(
@@ -63,6 +69,7 @@ class MealDetailScreen extends StatelessWidget {
                 },
               ),
             ),
+            //Aqui é feito a mesmo coisa de anteriomente, so que personalizado para o passo a passo
             _createSectionTitle(context, "Passos"),
             _createSectionContainer(
               context,
@@ -90,9 +97,12 @@ class MealDetailScreen extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
+        //Mudando o formato do Icon de acordo com o retorno da função que verifica se essa refeição está contida nos favoritos la no main.dart
         child: Icon(isFavoriteMeal(meal) ? Icons.star : Icons.star_border),
-        //.pop() deleta essa tela da pilha e volta para anterior, no seus parâmetros é possível mandar um
+        //.pop() deleta essa tela da pilha e volta para anterior, no seus parâmetros é possível mandar um Objeto
         onPressed: () {
+          //Navigator.of(context).pop(meal);
+          //Chamando a função que adiciona ou remove uma refeição dos favoritos lá do main.dart
           selectedFavorite(meal);
         },
       ),
